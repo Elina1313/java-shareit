@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.storage;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.model.Item;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class ItemStorageImpl implements ItemStorage {
     private long generateId;
