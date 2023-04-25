@@ -30,7 +30,7 @@ public class ItemStorageImpl implements ItemStorage {
         Long id = getNextId();
         item.setId(id);
         items.put(id, item);
-        return item;
+        return item;//
     }
 
     @Override
