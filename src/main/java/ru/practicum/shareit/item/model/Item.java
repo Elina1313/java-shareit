@@ -7,10 +7,6 @@ import ru.practicum.shareit.request.ItemRequest;
 
 import javax.validation.constraints.NotBlank;
 
-/**
- * TODO Sprint add-controllers.
- */
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
