@@ -30,7 +30,7 @@ public class ItemStorageImpl implements ItemStorage {
         Long id = getNextId();
         item.setId(id);
         items.put(id, item);
-        return item;//
+        return item;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ItemStorageImpl implements ItemStorage {
     public List<Item> getAllItems(Long userId) {
         return items.values()
                 .stream()
-                .filter(x -> x.getOwner() == userId)
+                .filter(x -> x.getOwner().getId() == userId)
                 .collect(Collectors.toList());
     }
 

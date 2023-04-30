@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -20,30 +19,28 @@ public class ItemController {
 
     @PostMapping
     public ItemDto addItem(@RequestBody ItemDto itemDto,
-                           @NotNull @RequestHeader("X-Sharer-User-Id") long userId) {
+                           @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.debug("received a request to add Item");
-        Item item = ItemMapper.dtoToItem(itemDto, userId);
-        return ItemMapper.itemToDto(itemService.createItem(item));
+        return ItemMapper.itemToDto(itemService.createItem(itemDto, userId));
     }
 
     @PatchMapping("/{itemId}")
     public ItemDto updateItem(@RequestBody ItemDto itemDto,
-                              @NotNull @PathVariable("itemId") long itemId,
-                              @NotNull @RequestHeader("X-Sharer-User-Id") long userId) {
+                              @PathVariable("itemId") Long itemId,
+                              @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.debug("request to update Item with id: {}", itemId);
-        Item item = ItemMapper.dtoToItem(itemDto, userId);
-        item.setId(itemId);
-        return ItemMapper.itemToDto(itemService.updateItem(item));
+        itemDto.setId(itemId);
+        return ItemMapper.itemToDto(itemService.updateItem(itemDto, userId));
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getItem(@PathVariable("itemId") long itemId) {
+    public ItemDto getItem(@PathVariable("itemId") Long itemId) {
         log.debug("request to get info for itemId: {}", itemId);
         return ItemMapper.itemToDto(itemService.getItem(itemId));
     }
 
     @GetMapping
-    public List<ItemDto> getListOfThings(@RequestHeader("X-Sharer-User-Id") long userId) {
+    public List<ItemDto> getListOfThings(@RequestHeader("X-Sharer-User-Id") Long userId) {
         log.debug("request to get list of things for userId: {}", userId);
         List<Item> userItems = itemService.getAllItems(userId);
         return ItemMapper.toItemDtoList(userItems);

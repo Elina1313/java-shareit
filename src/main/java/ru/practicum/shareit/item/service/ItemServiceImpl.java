@@ -2,9 +2,10 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.storage.ItemStorage;
-import ru.practicum.shareit.user.storage.UserStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemStorage itemStorage;
-    private final UserStorage userStorage;
+    private final ItemMapper itemMapper;
 
     @Override
-    public Item createItem(Item item) {
-        userStorage.getUser(item.getOwner());
-        return itemStorage.createItem(item);
+    public Item createItem(ItemDto itemDto, Long ownerId) {
+        itemDto.setOwnerId(ownerId);
+        return itemStorage.createItem(itemMapper.dtoToItem(itemDto, ownerId));
     }
 
     @Override
@@ -27,12 +28,12 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item updateItem(Item item) {
-        return itemStorage.updateItem(item);
+    public Item updateItem(ItemDto itemDto, Long userId) {
+        return itemStorage.updateItem(itemMapper.dtoToItem(itemDto, userId));
     }
 
     @Override
-    public List<Item> getAllItems(long userId) {
+    public List<Item> getAllItems(Long userId) {
         return itemStorage.getAllItems(userId);
     }
 
