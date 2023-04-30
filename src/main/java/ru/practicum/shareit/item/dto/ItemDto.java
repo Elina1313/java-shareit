@@ -1,9 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,9 +15,7 @@ public class ItemDto {
     @NotBlank
     private String description;
     @NotNull
-    @EqualsAndHashCode.Exclude
     private Boolean available;
-    @JsonIgnore
     private Long ownerId;
 
 }
