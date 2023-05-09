@@ -9,13 +9,48 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionHandlers {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse validationException(ValidationException e) {
+    public ErrorResponse validationException(final ValidationException e) {
         return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse notFoundException(NotFoundException e) {
+    public ErrorResponse notFoundException(final NotFoundException e) {
         return new ErrorResponse(e.getMessage());
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse runtimeException(final RuntimeException e) {
+        if (e.getMessage().contains("UNSUPPORTED_STATUS"))
+            return new ErrorResponse("Unknown state: UNSUPPORTED_STATUS");
+        return new ErrorResponse(
+                String.format(e.getMessage() + "2222")
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse badRequestException(final BadRequestException e) {
+        return new ErrorResponse(
+                String.format(e.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse emailConflictException(final EmailConflictException e) {
+        return new ErrorResponse(
+                String.format(e.getMessage())
+        );
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse wrongUserException(final WrongUserException e) {
+        return new ErrorResponse(
+                String.format(e.getMessage())
+        );
+    }
+
 }

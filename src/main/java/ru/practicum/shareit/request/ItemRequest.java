@@ -5,16 +5,23 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.user.model.User;
 
-import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(name = "requests")
 public class ItemRequest {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank
+    @Column(name = "description", nullable = false)
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "requester_id", referencedColumnName = "id", nullable = false)
     private User requester;
-    private LocalDateTime created;
+    @Column(name = "created", nullable = false)
+    private Instant created;
 }

@@ -1,37 +1,31 @@
 package ru.practicum.shareit.item.mapper;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
-@Component
 public class ItemMapper {
-    private final UserService userService;
 
     public static ItemDto itemToDto(Item item) {
-        return new ItemDto(
-                item.getId(),
-                item.getName(),
-                item.getDescription(),
-                item.getAvailable(),
-                item.getOwner().getId()
-        );
+        ItemDto result = new ItemDto();
+        result.setId(item.getId());
+        result.setName(item.getName());
+        result.setDescription(item.getDescription());
+        result.setAvailable(item.getAvailable());
+        return result;
     }
 
-    public Item dtoToItem(ItemDto itemDto, Long userId) {
+    public static Item dtoToItem(ItemDto itemDto, User owner) {
         return new Item(
                 itemDto.getId(),
                 itemDto.getName(),
                 itemDto.getDescription(),
                 itemDto.getAvailable(),
-                userService.getUser(userId),
-                null
+                owner,
+                0
 
         );
     }

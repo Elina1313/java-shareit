@@ -22,20 +22,19 @@ public class UserController {
     @PostMapping
     public UserDto createUser(@Valid @RequestBody UserDto userDto) {
         log.debug("add user request");
-        User user = UserMapper.dtoToUser(userDto);
-        return UserMapper.userToDto(userService.createUser(user));
+        return userService.createUser(userDto);
     }
 
     @PatchMapping("/{userId}")
-    public UserDto updateUser(@NotNull @PathVariable long userId, @RequestBody UserDto userDto) {
+    public UserDto updateUser(@NotNull @PathVariable Long userId, @RequestBody UserDto userDto) {
         log.debug("request to update user id: {}", userId);
         User user = UserMapper.dtoToUser(userDto);
         user.setId(userId);
-        return UserMapper.userToDto(userService.updateUser(user));
+        return UserMapper.userToDto(userService.updateUser(user, userDto));
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUser(@NotNull @PathVariable long userId) {
+    public UserDto getUser(@NotNull @PathVariable Long userId) {
         log.debug("request to get user id: {}", userId);
         return UserMapper.userToDto(userService.getUser(userId));
     }
@@ -47,7 +46,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@NotNull @PathVariable long userId) {
+    public void deleteUser(@NotNull @PathVariable Long userId) {
         log.info("request to delete user id: {}", userId);
         userService.deleteUser(userId);
     }
