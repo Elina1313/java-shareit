@@ -7,7 +7,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

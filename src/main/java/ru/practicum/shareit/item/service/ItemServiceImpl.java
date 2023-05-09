@@ -41,12 +41,14 @@ public class ItemServiceImpl implements ItemService {
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
 
+    @Override
     @Transactional
     public ItemDto createItem(ItemDto itemDto, Long ownerId) {
         validate(itemDto);
         Item item = ItemMapper.dtoToItem(itemDto, userService.getUser(ownerId));
         User owner = findUser(ownerId);
         item.setOwner(owner);
+
         return ItemMapper.itemToDto(itemRepository.save(item));
     }
 
