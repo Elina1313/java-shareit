@@ -22,7 +22,7 @@ public class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Column(name = "name",length = 255, nullable = false)
+    @Column(name = "name", length = 255, nullable = false)
     private String name;
     @NotBlank
     @Column(name = "description", length = 255, nullable = false)
