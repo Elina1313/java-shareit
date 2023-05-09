@@ -18,7 +18,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;//
+    private Long id;
     @NotBlank
     @Column(length = 255, nullable = false)
     private String text;
