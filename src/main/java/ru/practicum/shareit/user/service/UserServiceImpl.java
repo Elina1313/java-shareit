@@ -18,7 +18,6 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
-    @Transactional
     @Override
     public UserDto createUser(UserDto userDto) {
         if (userDto.getEmail() == null || userDto.getEmail().isBlank() || !userDto.getEmail().contains("@")) {

@@ -42,7 +42,6 @@ public class ItemServiceImpl implements ItemService {
     private final CommentRepository commentRepository;
 
     @Override
-    @Transactional
     public ItemDto createItem(ItemDto itemDto, Long ownerId) {
         validate(itemDto);
         Item item = ItemMapper.dtoToItem(itemDto, userService.getUser(ownerId));
