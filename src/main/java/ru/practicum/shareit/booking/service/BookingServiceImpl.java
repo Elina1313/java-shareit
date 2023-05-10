@@ -29,10 +29,8 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-
     private final Sort sort = Sort.by(Sort.Direction.DESC, "start");
 
-    @Transactional
     @Override
     public BookingDto create(BookingShortDto bookingShortDto, Long userId) {
         User user = userRepository.findById(userId)

@@ -19,10 +19,8 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
     @Column(name = "start_date", nullable = false)
     private LocalDateTime start;
-    @NotNull
     @Column(name = "end_date", nullable = false)
     private LocalDateTime end;
     @ManyToOne

@@ -18,13 +18,10 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
     @Column(name = "name", length = 255, nullable = false)
     private String name;
-    @NotBlank
     @Column(name = "description", length = 255, nullable = false)
     private String description;
-    @NotNull
     @EqualsAndHashCode.Exclude
     @Column(name = "is_available")
     private Boolean available;
