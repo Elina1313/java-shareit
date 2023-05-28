@@ -9,7 +9,7 @@ public class ExceptionTest {
     private final ExceptionHandlers handler = new ExceptionHandlers();
 
     @Test
-    public void NotFoundExceptionTest() {
+    public void notFoundExceptionTest() {
         NotFoundException e = new NotFoundException("not found");
         ErrorResponse errorResponse = handler.notFoundException(e);
         assertNotNull(errorResponse);
