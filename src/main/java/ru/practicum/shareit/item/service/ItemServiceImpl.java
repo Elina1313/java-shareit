@@ -185,7 +185,7 @@ public class ItemServiceImpl implements ItemService {
         List<Item> result = new ArrayList<>();
         text = text.toLowerCase();
 
-        List<Item> itemList = itemRepository.findAll(PageRequest.of(from, size)).stream().toList();
+        List<Item> itemList = itemRepository.findAll(PageRequest.of(from, size)).toList();
 
         for (Item item : itemList) {
             String name = item.getName().toLowerCase();
