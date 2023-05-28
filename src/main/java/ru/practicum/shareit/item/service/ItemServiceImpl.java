@@ -130,7 +130,8 @@ public class ItemServiceImpl implements ItemService {
             item.setAvailable(itemDto.getAvailable());
         }
 
-        return ItemMapper.itemToDto(item);
+
+        return ItemMapper.itemToDto(itemRepository.save(item));
 
     }
 
