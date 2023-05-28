@@ -134,6 +134,8 @@ public class ItemServiceTest {
 
         when(itemRepository.findById(any(Long.class)))
                 .thenReturn(Optional.ofNullable(item));
+        when(itemRepository.save(any()))
+                .thenReturn(item);
 
         ItemDto result = itemService.updateItem(itemDto, itemDto.getId(), user.getId());
 
