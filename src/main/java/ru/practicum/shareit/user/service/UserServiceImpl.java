@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
             firstUser.setEmail(userDto.getEmail());
         }
 
-        return firstUser;
+        return userRepository.save(firstUser);
     }
 
     @Transactional(readOnly = true)

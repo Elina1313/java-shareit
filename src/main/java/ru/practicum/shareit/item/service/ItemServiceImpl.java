@@ -107,7 +107,6 @@ public class ItemServiceImpl implements ItemService {
         return itemDto;
     }
 
-    @Transactional
     @Override
     public ItemDto updateItem(ItemDto itemDto, Long itemId, Long userId) {
 
@@ -129,7 +128,7 @@ public class ItemServiceImpl implements ItemService {
         if (itemDto.getAvailable() != null) {
             item.setAvailable(itemDto.getAvailable());
         }
-
+        
 
         return ItemMapper.itemToDto(itemRepository.save(item));
 
