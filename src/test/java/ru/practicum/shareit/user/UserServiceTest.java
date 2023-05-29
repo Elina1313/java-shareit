@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.user.dto.UserDto;
+import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.service.UserServiceImpl;
@@ -50,18 +51,19 @@ public class UserServiceTest {
         verify(userRepository, times(1)).save(any(User.class));
     }
 
-/*    @Test
+    @Test
     void updateTest() {
         user.setName("updated name");
         UserDto inputDto = UserMapper.userToDto(user);
 
         when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(user));
+        when(userRepository.save(any())).thenReturn(user);
 
         User userDto = userService.updateUser(user, inputDto);
 
         assertEquals(userDto.getId(), 1);
         assertEquals(userDto.getName(), inputDto.getName());
-    }*/
+    }
 
     @Test
     void findByIdTest() {
