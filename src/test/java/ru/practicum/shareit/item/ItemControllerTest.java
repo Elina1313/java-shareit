@@ -157,7 +157,7 @@ public class ItemControllerTest {
     @Test
     @SneakyThrows
     public void findByRequestTest() throws Exception {
-        when(itemService.searchItems(any(String.class), any(Integer.class), any(Integer.class)))
+        when(itemService.searchItems(any(String.class), any()))
                 .thenReturn(new ArrayList<>());
 
         mvc.perform(get("/items/search")
@@ -169,6 +169,6 @@ public class ItemControllerTest {
                 .andExpect(content().json("[]"));
 
         verify(itemService, times(1))
-                .searchItems(any(String.class), any(Integer.class), any(Integer.class));
+                .searchItems(any(String.class), any());
     }
 }

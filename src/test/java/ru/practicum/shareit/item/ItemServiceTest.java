@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingStatus;
@@ -203,7 +204,7 @@ public class ItemServiceTest {
         when(itemRepository.findAll(any(Pageable.class)))
                 .thenReturn(new PageImpl<>(List.of(item)));
 
-        List<Item> result = itemService.searchItems("Item", 0, 10);
+        List<Item> result = itemService.searchItems("Item", PageRequest.of(0, 10));
 
         assertNotNull(result);
         assertEquals(result.get(0).getId(), item.getId());

@@ -67,8 +67,8 @@ public class ItemRequestServiceTest {
 
     @Test
     void getAllByUserTest() {
-        when(userRepository.findById(any(Long.class)))
-                .thenReturn(Optional.ofNullable(user));
+        when(userRepository.existsById(any()))
+                .thenReturn(true);
 
         when(itemRequestRepository
                 .findAllByRequesterIdOrderByCreatedAsc(any(Long.class)))
@@ -96,8 +96,8 @@ public class ItemRequestServiceTest {
 
     @Test
     void getByIdTest() {
-        when(userRepository.findById(any(Long.class)))
-                .thenReturn(Optional.ofNullable(user));
+        when(userRepository.existsById(any(Long.class)))
+                .thenReturn(true);
 
         when(itemRequestRepository.findById(any(Long.class)))
                 .thenReturn(Optional.ofNullable(itemRequest));

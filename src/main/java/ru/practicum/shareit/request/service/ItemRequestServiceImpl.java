@@ -42,8 +42,9 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public List<ItemRequestDto> findALLItemRequestByUser(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("user with id:" + userId + " not found error"));
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException("user with id:" + userId + " not found error");
+        }
         List<ItemRequestDto> itemRequestDtos = itemRequestRepository.findAllByRequesterIdOrderByCreatedAsc(userId)
                 .stream()
                 .map(ItemRequestMapper::toItemRequestDto)
@@ -70,8 +71,9 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public ItemRequestDto getItemRequestById(Long requestId, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException("user with id:" + userId + " not found error"));
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException("user with id:" + userId + " not found error");
+        }
         ItemRequest itemRequest = itemRequestRepository.findById(requestId)
                 .orElseThrow(() -> new NotFoundException("request with id:" + requestId + " not found error"));
         ItemRequestDto itemRequestDto = ItemRequestMapper.toItemRequestDto(itemRequest);

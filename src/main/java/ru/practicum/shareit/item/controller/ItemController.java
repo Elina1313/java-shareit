@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CommentDto;
@@ -58,7 +59,7 @@ public class ItemController {
                                      @RequestParam(defaultValue = "0") @Min(0) int from,
                                      @RequestParam(defaultValue = "10") @Min(1) int size) {
         log.debug("request to search a thing by description: {}", text);
-        List<Item> foundItems = itemService.searchItems(text, from, size);
+        List<Item> foundItems = itemService.searchItems(text, PageRequest.of(from, size));
         return ItemMapper.toItemDtoList(foundItems);
     }
 
