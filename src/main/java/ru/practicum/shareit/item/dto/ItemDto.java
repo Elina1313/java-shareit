@@ -9,16 +9,24 @@ import java.util.List;
 
 @Data
 public class ItemDto {
-    private long id;
+
+    private Long id;
+
     @NotBlank
     private String name;
+
     @NotBlank
     private String description;
+
     @NotNull
     private Boolean available;
+
     private BookingShortDto lastBooking;
+
     private BookingShortDto nextBooking;
+
     private List<CommentDto> comments;
 
+    private Long requestId;
 
 }

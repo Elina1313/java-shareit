@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,15 +23,16 @@ import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.CommentRepository;
 import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
-import ru.practicum.shareit.user.service.UserService;
+
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,29 +40,24 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
+    private final ItemRequestRepository itemRequestRepository;
 
     @Override
-    public ItemDto createItem(ItemDto itemDto, Long ownerId) {
+    public ItemDto createItem(ItemDto itemDto, Long userId) {
         validate(itemDto);
-        Item item = ItemMapper.dtoToItem(itemDto, userService.getUser(ownerId));
-        User owner = findUser(ownerId);
-        item.setOwner(owner);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("user with id:" + userId + " not found"));
+
+        Item item = ItemMapper.dtoToItem(itemDto, user);
+        if (itemDto.getRequestId() != null) {
+            ItemRequest itemRequest = itemRequestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new NotFoundException("request with id:" + itemDto.getRequestId() + " not found error"));
+            item.setRequest(itemRequest);
+        }
 
         return ItemMapper.itemToDto(itemRepository.save(item));
-    }
-
-    private User findUser(long userId) {
-        if (userId == 0) {
-            throw new ValidationException("userId is null");
-        }
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new NotFoundException("user not found");
-        }
-        return user.get();
     }
 
     private void validate(ItemDto itemDto) {
@@ -107,7 +105,6 @@ public class ItemServiceImpl implements ItemService {
         return itemDto;
     }
 
-    @Transactional
     @Override
     public ItemDto updateItem(ItemDto itemDto, Long itemId, Long userId) {
 
@@ -130,24 +127,23 @@ public class ItemServiceImpl implements ItemService {
             item.setAvailable(itemDto.getAvailable());
         }
 
-        return ItemMapper.itemToDto(item);
+        return ItemMapper.itemToDto(itemRepository.save(item));
 
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
-    public List<ItemDto> getAllItems(Long userId) {
+    public List<ItemDto> getAllItems(Long userId, int from, int size) {
 
-        List<Item> items = itemRepository.findAllByOwnerId(userId);
+        List<ItemDto> items = itemRepository.findAllByOwnerId(userId, PageRequest.of(from, size)).stream()
+                .map(ItemMapper::itemToDto)
+                .collect(Collectors.toList());
+
         if (items.isEmpty()) {
             return new ArrayList<>();
         }
 
-        List<ItemDto> itemDtoList = items.stream()
-                .map(ItemMapper::itemToDto)
-                .collect(Collectors.toList());
-
-        for (ItemDto itemDto : itemDtoList) {
+        for (ItemDto itemDto : items) {
             itemDto.setComments(commentRepository.findAllByItemId(itemDto.getId())
                     .stream().map(CommentMapper::toCommentDto).collect(Collectors.toList()));
 
@@ -162,9 +158,9 @@ public class ItemServiceImpl implements ItemService {
             itemDto.setNextBooking(nextBooking.isEmpty() ? new BookingShortDto() : BookingMapper.toBookingShortDto(nextBooking.get(0)));
         }
 
-        itemDtoList.sort(Comparator.comparing(o -> o.getLastBooking().getStart(), Comparator.nullsLast(Comparator.reverseOrder())));
+        items.sort(Comparator.comparing(o -> o.getLastBooking().getStart(), Comparator.nullsLast(Comparator.reverseOrder())));
 
-        for (ItemDto itemDto : itemDtoList) {
+        for (ItemDto itemDto : items) {
             if (itemDto.getLastBooking().getBookerId() == null) {
                 itemDto.setLastBooking(null);
             }
@@ -173,12 +169,12 @@ public class ItemServiceImpl implements ItemService {
             }
         }
 
-        return itemDtoList;
+        return items;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Item> searchItems(String text) {
+    public List<Item> searchItems(String text, Pageable pageable) {
         if (text == null || text.isBlank()) {
             return new ArrayList<>();
         }
@@ -186,7 +182,9 @@ public class ItemServiceImpl implements ItemService {
         List<Item> result = new ArrayList<>();
         text = text.toLowerCase();
 
-        for (Item item : itemRepository.findAll()) {
+        List<Item> itemList = itemRepository.findAll(pageable).getContent();
+
+        for (Item item : itemList) {
             String name = item.getName().toLowerCase();
             String description = item.getDescription().toLowerCase();
 

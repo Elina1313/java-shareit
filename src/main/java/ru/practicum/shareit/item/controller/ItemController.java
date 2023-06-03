@@ -2,6 +2,8 @@ package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -10,10 +12,12 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
+@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/items")
@@ -43,15 +47,19 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDto> getListOfThings(@NotNull @RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemDto> getListOfThings(@NotNull @RequestHeader("X-Sharer-User-Id") Long userId,
+                                         @RequestParam(defaultValue = "0") @Min(0) int from,
+                                         @RequestParam(defaultValue = "10") @Min(1) int size) {
         log.debug("request to get list of things for userId: {}", userId);
-        return itemService.getAllItems(userId);
+        return itemService.getAllItems(userId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> searchThing(@RequestParam String text) {
+    public List<ItemDto> searchThing(@RequestParam String text,
+                                     @RequestParam(defaultValue = "0") @Min(0) int from,
+                                     @RequestParam(defaultValue = "10") @Min(1) int size) {
         log.debug("request to search a thing by description: {}", text);
-        List<Item> foundItems = itemService.searchItems(text);
+        List<Item> foundItems = itemService.searchItems(text, PageRequest.of(from, size));
         return ItemMapper.toItemDtoList(foundItems);
     }
 
