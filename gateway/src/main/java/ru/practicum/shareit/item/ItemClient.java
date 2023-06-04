@@ -3,6 +3,7 @@ package ru.practicum.shareit.item;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -43,19 +44,19 @@ public class ItemClient extends BaseClient {
         return get("/" + itemId, userId);
     }
 
-    public ResponseEntity<Object> getAllItems(Long userId, int from, int size) {
+    public ResponseEntity<Object> getAllItems(Long userId, Pageable pageable) {
         Map<String, Object> parameters = Map.of(
-                "from", from,
-                "size", size
+                "from", pageable.getPageNumber(),
+                "size", pageable.getPageSize()
         );
         return get("?from={from}&size={size}", userId, parameters);
     }
 
-    public ResponseEntity<Object> searchItems(String text, int from, int size) {
+    public ResponseEntity<Object> searchItems(String text, Pageable pageable) {
         Map<String, Object> parameters = Map.of(
                 "text", text,
-                "from", from,
-                "size", size
+                "from", pageable.getPageNumber(),
+                "size", pageable.getPageSize()
         );
         return get("/search?text={text}&from={from}&size={size}", null, parameters);
     }
