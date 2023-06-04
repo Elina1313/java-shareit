@@ -2,6 +2,7 @@ package ru.practicum.shareit.request;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exception.BadRequestException;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
@@ -38,7 +39,7 @@ public class ItemRequestController {
         if (from < 0 || size <= 0) {
             throw new BadRequestException("incorrect parameters");
         }
-        return itemRequestService.getAllItemRequestByUser(from, size, userId);
+        return itemRequestService.getAllItemRequestByUser(PageRequest.of(from, size), userId);
     }
 
     @GetMapping("/{requestId}")

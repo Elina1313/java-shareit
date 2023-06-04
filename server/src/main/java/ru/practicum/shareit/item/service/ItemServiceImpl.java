@@ -132,9 +132,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ItemDto> getAllItems(Long userId, int from, int size) {
+    public List<ItemDto> getAllItems(Long userId, Pageable pageable) {
 
-        List<ItemDto> items = itemRepository.findAllByOwnerId(userId, PageRequest.of(from, size)).stream()
+        List<ItemDto> items = itemRepository.findAllByOwnerId(userId, pageable).stream()
                 .map(ItemMapper::itemToDto)
                 .collect(Collectors.toList());
 

@@ -14,7 +14,7 @@ public interface ItemService {
 
     ItemDto updateItem(ItemDto itemDto, Long itemId, Long userId);
 
-    List<ItemDto> getAllItems(Long userId, int from, int size);
+    List<ItemDto> getAllItems(Long userId, Pageable pageable);
 
     List<Item> searchItems(String text, Pageable pageable);
 

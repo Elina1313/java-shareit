@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.item.controller.ItemController;
@@ -140,7 +141,7 @@ public class ItemControllerTest {
     @Test
     @SneakyThrows
     public void getAllTest() {
-        when(itemService.getAllItems(any(Long.class), any(Integer.class), any(Integer.class)))
+        when(itemService.getAllItems(any(Long.class), any(Pageable.class)))
                 .thenReturn(new ArrayList<>());
 
         mvc.perform(get("/items")
@@ -151,7 +152,7 @@ public class ItemControllerTest {
                 .andExpect(content().json("[]"));
 
         verify(itemService, times(1))
-                .getAllItems(any(Long.class), any(Integer.class), any(Integer.class));
+                .getAllItems(any(Long.class), any(Pageable.class));
     }
 
     @Test

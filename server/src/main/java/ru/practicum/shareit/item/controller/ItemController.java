@@ -51,7 +51,7 @@ public class ItemController {
                                          @RequestParam(defaultValue = "0") @Min(0) int from,
                                          @RequestParam(defaultValue = "10") @Min(1) int size) {
         log.debug("request to get list of things for userId: {}", userId);
-        return itemService.getAllItems(userId, from, size);
+        return itemService.getAllItems(userId, PageRequest.of(from, size));
     }
 
     @GetMapping("/search")

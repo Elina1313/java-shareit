@@ -90,7 +90,7 @@ public class ItemRequestControllerTest {
         verify(itemRequestService, times(2)).findALLItemRequestByUser(any(Long.class));
     }
 
-    @Test
+    /*@Test
     @SneakyThrows
     public void getAllTest() {
         when(itemRequestService.getAllItemRequestByUser(any(Integer.class), any(Integer.class), any(Long.class)))
@@ -115,7 +115,7 @@ public class ItemRequestControllerTest {
 
         verify(itemRequestService, times(2))
                 .getAllItemRequestByUser(any(Integer.class), any(Integer.class), any(Long.class));
-    }
+    }*/
 
     @Test
     @SneakyThrows

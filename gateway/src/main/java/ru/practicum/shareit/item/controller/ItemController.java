@@ -45,8 +45,8 @@ public class ItemController {
 
     @GetMapping
     public ResponseEntity<Object> getAllItems(@NotNull @RequestHeader("X-Sharer-User-Id") Long userId,
-                                                  @RequestParam(defaultValue = "0") @Min(0) int from,
-                                                  @RequestParam(defaultValue = "10") @Min(1) int size) {
+                                              @RequestParam(defaultValue = "0") @Min(0) int from,
+                                              @RequestParam(defaultValue = "10") @Min(1) int size) {
         log.debug("request to get list of things for userId: {}", userId);
         return itemClient.getAllItems(userId, from, size);
     }
@@ -56,8 +56,7 @@ public class ItemController {
                                               @RequestParam(defaultValue = "0") @Min(0) int from,
                                               @RequestParam(defaultValue = "10") @Min(1) int size) {
         log.debug("request to search a thing by description: {}", text);
-        //List<Item> foundItems = itemClient.searchItems(text, PageRequest.of(from, size));
-        return itemClient.searchItems(text, from, size); //PageRequest.of(from, size));
+        return itemClient.searchItems(text, from, size);
     }
 
     @PostMapping("/{itemId}/comment")

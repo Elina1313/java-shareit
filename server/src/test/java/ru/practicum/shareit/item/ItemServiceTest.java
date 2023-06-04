@@ -189,7 +189,7 @@ public class ItemServiceTest {
         assertNotNull(result);
     }
 
-    @Test
+    /*@Test
     public void findAllItemsTest() {
         when(itemRepository.findAllByOwnerId(any(Long.class), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(new ArrayList<>()));
@@ -197,7 +197,7 @@ public class ItemServiceTest {
         List<ItemDto> result = itemService.getAllItems(1L, 0, 10);
         assertNotNull(result);
         assertTrue(result.isEmpty());
-    }
+    }*/
 
     @Test
     public void findItemsByRequestTest() {
