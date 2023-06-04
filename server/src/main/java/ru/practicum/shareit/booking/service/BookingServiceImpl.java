@@ -143,7 +143,7 @@ public class BookingServiceImpl implements BookingService {
                 break;
 
             case CURRENT:
-                bookingDtoList.addAll(bookingRepository.findAllByBookerAndStartBeforeAndEndAfter(user,
+                bookingDtoList.addAll(bookingRepository.findAllByBookerAndStartBeforeAndEndAfterOrderByStartDesc(user,
                         LocalDateTime.now(), LocalDateTime.now(), pageRequest).toList());
                 break;
 
