@@ -33,7 +33,7 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAllItemRequestByUser(@RequestParam(defaultValue = "0") int from,
-                                                          @RequestParam(defaultValue = "10") int size,
+                                                          @RequestParam(defaultValue = "20") int size,
                                                           @RequestHeader("X-Sharer-User-Id") Long userId) {
         if (from < 0 || size <= 0) {
             throw new BadRequestException("incorrect parameters");

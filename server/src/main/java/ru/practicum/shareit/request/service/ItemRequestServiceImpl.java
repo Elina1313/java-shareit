@@ -61,6 +61,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .orElseThrow(() -> new NotFoundException("user with id:" + userId + " not found error"));
         List<ItemRequestDto> itemRequestDtos = itemRequestRepository.findAllByRequesterNotLikeOrderByCreatedAsc(user,
                         pageable)
+                .getContent()
                 .stream()
                 .map(ItemRequestMapper::toItemRequestDto)
                 .collect(Collectors.toList());
