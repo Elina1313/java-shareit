@@ -142,7 +142,7 @@ public class BookingServiceTest {
                 .thenReturn(Optional.ofNullable(user));
 
         when(bookingRepository
-                .findAllByBookerAndStartBeforeAndEndAfter(any(User.class), any(LocalDateTime.class),
+                .findAllByBookerAndStartBeforeAndEndAfterOrderByStartDesc(any(User.class), any(LocalDateTime.class),
                         any(LocalDateTime.class), any(Pageable.class)))
                 .thenReturn(new PageImpl<>(Collections.singletonList(booking)));
 
