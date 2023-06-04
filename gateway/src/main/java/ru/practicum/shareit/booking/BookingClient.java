@@ -3,7 +3,6 @@ package ru.practicum.shareit.booking;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
@@ -28,11 +27,11 @@ public class BookingClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> getAllByUser(BookingState state, long userId, Pageable pageable) {
+    public ResponseEntity<Object> getAllByUser(BookingState state, long userId, Integer from, Integer size) {
         Map<String, Object> parameters = Map.of(
                 "state", state.name(),
-                "from", pageable.getPageNumber(),
-                "size", pageable.getPageSize()
+                "from", from,
+                "size", size
         );
         return get("?state={state}&from={from}&size={size}", userId, parameters);
     }
@@ -54,11 +53,11 @@ public class BookingClient extends BaseClient {
         return get("/" + bookingId, userId);
     }
 
-    public ResponseEntity<Object> getAllByOwner(BookingState state, Long userId, Pageable pageable) {
+    public ResponseEntity<Object> getAllByOwner(BookingState state, Long userId, int from, int size) {
         Map<String, Object> parameters = Map.of(
                 "state", state,
-                "from", pageable.getPageNumber(),
-                "size", pageable.getPageSize()
+                "from", from,
+                "size", size
         );
         return get("/owner?state={state}&from={from}&size={size}", userId, parameters);
     }

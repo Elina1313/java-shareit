@@ -57,7 +57,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Transactional
     @Override
     public List<ItemRequestDto> getAllItemRequestByUser(Pageable pageable, Long userId) {
-        User user = userRepository.findById(userId)
+        /*User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("user with id:" + userId + " not found error"));
         List<ItemRequestDto> itemRequestDtos = itemRequestRepository.findAllByRequesterNotLikeOrderByCreatedAsc(user,
                         pageable)
@@ -65,7 +65,14 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .stream()
                 .map(ItemRequestMapper::toItemRequestDto)
                 .collect(Collectors.toList());
+        itemRequestDtos.forEach(this::setItemsToItemRequestDto);*/
+        List<ItemRequestDto> itemRequestDtos = itemRequestRepository.findAllByIdIsNot(userId, pageable)
+                .getContent()
+                .stream()
+                .map(ItemRequestMapper::toItemRequestDto)
+                .collect(Collectors.toList());
         itemRequestDtos.forEach(this::setItemsToItemRequestDto);
+
 
         return itemRequestDtos;
     }
