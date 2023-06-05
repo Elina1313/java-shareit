@@ -8,8 +8,6 @@ import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Slf4j
@@ -20,13 +18,13 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public UserDto createUser(@Valid @RequestBody UserDto userDto) {
+    public UserDto createUser(@RequestBody UserDto userDto) {
         log.debug("add user request");
         return userService.createUser(userDto);
     }
 
     @PatchMapping("/{userId}")
-    public UserDto updateUser(@NotNull @PathVariable Long userId, @RequestBody UserDto userDto) {
+    public UserDto updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
         log.debug("request to update user id: {}", userId);
         User user = UserMapper.dtoToUser(userDto);
         user.setId(userId);
@@ -34,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUser(@NotNull @PathVariable Long userId) {
+    public UserDto getUser(@PathVariable Long userId) {
         log.debug("request to get user id: {}", userId);
         return UserMapper.userToDto(userService.getUser(userId));
     }
@@ -46,7 +44,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@NotNull @PathVariable Long userId) {
+    public void deleteUser(@PathVariable Long userId) {
         log.info("request to delete user id: {}", userId);
         userService.deleteUser(userId);
     }

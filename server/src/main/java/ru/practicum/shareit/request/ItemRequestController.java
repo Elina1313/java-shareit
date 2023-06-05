@@ -8,7 +8,6 @@ import ru.practicum.shareit.exception.BadRequestException;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -21,7 +20,7 @@ public class ItemRequestController {
 
     @PostMapping
     public ItemRequestDto createItemRequest(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                            @Valid @RequestBody ItemRequestDto itemRequestDto) {
+                                            @RequestBody ItemRequestDto itemRequestDto) {
         log.debug("add item request");
         return itemRequestService.createItemRequest(userId, itemRequestDto);
     }
@@ -39,7 +38,7 @@ public class ItemRequestController {
         if (from < 0 || size <= 0) {
             throw new BadRequestException("incorrect parameters");
         }
-        return itemRequestService.getAllItemRequestByUser(PageRequest.of(from, size), userId);
+        return itemRequestService.getAllItemRequestByUser(userId, PageRequest.of(from, size));
     }
 
     @GetMapping("/{requestId}")

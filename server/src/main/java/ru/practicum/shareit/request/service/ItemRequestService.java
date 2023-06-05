@@ -10,7 +10,7 @@ public interface ItemRequestService {
 
     List<ItemRequestDto> findALLItemRequestByUser(Long userId);
 
-    List<ItemRequestDto> getAllItemRequestByUser(Pageable pageable, Long userId);
+    List<ItemRequestDto> getAllItemRequestByUser(Long userId, Pageable pageable);
 
     ItemRequestDto getItemRequestById(Long requestId, Long userId);
 }

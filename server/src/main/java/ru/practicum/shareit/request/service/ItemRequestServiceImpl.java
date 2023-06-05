@@ -56,7 +56,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Transactional
     @Override
-    public List<ItemRequestDto> getAllItemRequestByUser(Pageable pageable, Long userId) {
+    public List<ItemRequestDto> getAllItemRequestByUser(Long userId, Pageable pageable) {
         List<ItemRequestDto> itemRequestDtos = itemRequestRepository.findAllByIdIsNot(userId, pageable)
                 .getContent()
                 .stream()

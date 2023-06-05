@@ -29,7 +29,7 @@ services:
 
   db:
     image: postgres:13.7-alpine
-    container_name: shareit_bd_container
+    container_name: postgres
     ports:
       - "6541:5432"
     environment:
